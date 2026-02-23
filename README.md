@@ -1,0 +1,2 @@
+# AIedu
+AI education platform
