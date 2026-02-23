@@ -2,48 +2,49 @@
 
 HexaOrigin AI Skill OS marketing-site MVP (Next.js App Router + Tailwind).
 
-## Business vNext update
+## Pricing vNext update
 
-### What changed (`/business` only)
-- Rebuilt the Business page to match required IA order:
-  Hero → Outcomes KPI (4 cards) → Use Cases (6 cards) → How it works (3-step stepper + Input/Output/Proof) → Proof Layer → Implementation timelines (2-week/30-day) → Integrations & Controls → ROI Model → FAQ → Final CTA Band.
-- Added full CN/EN mirrored copy for all Business sections using locale-aware rendering.
-- Added KPI team toggle (Onboarding/Support/Sales/Ops/QA) with mock metric variants and `toggle_change` event logging.
-- Added 3-step How-it-works stepper with synchronized right panel and `step_change` event logging.
-- Added required CTA coverage on Hero, Implementation A/B cards, and Final CTA band, all wired to shared LeadModal.
-- Added required loading/empty patterns in-page:
-  - Hero visual placeholder skeleton,
-  - Proof visual skeleton,
-  - KPI supports `—` fallback and pilot benchmark badge.
+### What changed (`/pricing` only)
+- Rebuilt Pricing page with required IA order:
+  Pricing Hero + track toggle → Plan cards → Compare table → Pricing drivers → Pilot Offer (Business only) → Add-ons & Services (Business only) → Procurement & Billing (Business only) → Upgrade to Business band (Individual only) → Final CTA band.
+- Implemented Business/Individual track toggle with default `Business` and synchronized section switching.
+- Added light loading transition (180ms skeleton) when switching tracks.
+- Added full CN/EN copy blocks for pricing hero, conditional sections, and final CTA content.
 
-### CTA flow and events
-- CTA clicks use source values including:
-  `hero`, `implementationA`, `implementationB`, `finalBand`, and existing global sources.
-- LeadModal flow remains:
-  validation → loading (~700ms) → success/error (15% random error) → next steps + saved locally banner.
-- Events:
-  - `cta_click`
-  - `lead_submit_start`
-  - `lead_submit_success`
-  - `lead_submit_error`
-  - `toggle_change`
-  - `step_change`
+### CTA behavior mapping
+- Business track
+  - Request pricing → `LeadModalTrigger(type="pricing")`
+  - Start a 2-week pilot → `LeadModalTrigger(type="pilot")`
+  - Contact sales / Book demo paths → `LeadModalTrigger(type="demo")`
+- Individual track
+  - Start free / Upgrade to Pro → `LeadModalTrigger(type="demo")` (placeholder conversion flow)
+- All CTA clicks log:
+  - `pricing_cta_click` with `cta`, `track`, `section`, `locale`
+
+### Events and state handling
+- Added pricing events:
+  - `pricing_track_view`
+  - `pricing_track_toggle`
+  - `pricing_cta_click`
+- Lead modal events remain enabled:
+  - `lead_submit_start` / `lead_submit_success` / `lead_submit_error`
+- Required states covered:
+  - Loading: track switch skeleton
+  - Empty: compare table uses `—` / `Business only`
+  - Error: lead submit random 15% failure with retry-safe form state
+  - Success: lead success with saved-locally indicator
+
+### Compare table data and extension
+- Compare table data currently lives inline in `app/pricing/page.tsx` for both tracks.
+- To extend: move row/group arrays into `lib/pricing-data.ts` and keep `CompareTable` rendering schema unchanged.
 
 ### How to test
 1. `npm install`
 2. `npm run dev`
-3. Open `/business` and verify section order and bilingual content.
-4. Test team toggle updates KPI values and logs `toggle_change`.
-5. Test stepper changes right content and logs `step_change`.
-6. Click CTAs from Hero / Implementation / Final band and verify modal validation/loading/success/error flows.
-
-### Asset placeholder strategy
-- Business page uses explicit placeholders for required visuals:
-  - I-01 Hero visual placeholder
-  - I-04 step diagram placeholders
-  - I-05 proof layer placeholder
-- These placeholders prevent blank blocks and provide fallback-ready structure until WebP/PNG assets are supplied.
+3. Open `/pricing` and verify default track is Business.
+4. Toggle to Individual and confirm Hero CTA, plan cards, compare table, conditional sections, and final band all switch consistently.
+5. Click each CTA and verify modal opens + logs + submit flow states.
 
 ### Known gaps
-- No backend/auth/real integrations (mock-only by design).
+- No backend/auth/real payment/subscription system (mock-only by design).
 - Install/build checks can fail in restricted environments that block npm registry access.

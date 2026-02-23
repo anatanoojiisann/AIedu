@@ -6,7 +6,19 @@ import { useLocale } from "./locale-context";
 import { LeadPayload, LeadType, pushLead } from "@/lib/storage";
 import Link from "next/link";
 
-type CtaSource = "nav" | "hero" | "pilot" | "security" | "implementationA" | "implementationB" | "finalBand" | "page";
+type CtaSource =
+  | "nav"
+  | "hero"
+  | "pilot"
+  | "security"
+  | "implementationA"
+  | "implementationB"
+  | "finalBand"
+  | "pricingHero"
+  | "plan"
+  | "pilotOffer"
+  | "upgradeBand"
+  | "page";
 
 type FormState = {
   name: string;
@@ -32,7 +44,17 @@ const initial: FormState = {
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function LeadModalTrigger({ type, label, source = "page" }: { type: LeadType; label: string; source?: CtaSource }) {
+export function LeadModalTrigger({
+  type,
+  label,
+  source = "page",
+  onOpen,
+}: {
+  type: LeadType;
+  label: string;
+  source?: CtaSource;
+  onOpen?: () => void;
+}) {
   const pathname = usePathname();
   const { locale, t } = useLocale();
   const [open, setOpen] = useState(false);
@@ -41,6 +63,13 @@ export function LeadModalTrigger({ type, label, source = "page" }: { type: LeadT
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
+
+  const title =
+    type === "demo"
+      ? t.form.titleDemo
+      : type === "pilot"
+        ? t.form.titlePilot
+        : t.form.titlePricing;
 
   const submit = async () => {
     if (!form.company || !form.workEmail || !form.role || !form.teamSize || !form.platform || !form.useCase) {
@@ -86,10 +115,11 @@ export function LeadModalTrigger({ type, label, source = "page" }: { type: LeadT
     <>
       <button
         onClick={() => {
+          onOpen?.();
           setOpen(true);
           console.log("cta_click", { source, cta: type, locale, pathname });
         }}
-        className={type === "demo" ? "rounded bg-gradient-to-r from-cosmic-blue to-cosmic-cyan px-3 py-2 text-xs font-semibold text-cosmic-navy" : "rounded border border-cosmic-silver/60 bg-transparent px-3 py-2 text-xs font-semibold text-current"}
+        className={type === "demo" || type === "pricing" ? "rounded bg-gradient-to-r from-cosmic-blue to-cosmic-cyan px-3 py-2 text-xs font-semibold text-cosmic-navy" : "rounded border border-cosmic-silver/60 bg-transparent px-3 py-2 text-xs font-semibold text-current"}
       >
         {label}
       </button>
@@ -98,7 +128,7 @@ export function LeadModalTrigger({ type, label, source = "page" }: { type: LeadT
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4">
           <div className="w-full max-w-xl rounded-xl border border-cosmic-silver/30 bg-white p-4">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-semibold">{type === "demo" ? t.form.titleDemo : t.form.titlePilot}</h3>
+              <h3 className="text-lg font-semibold">{title}</h3>
               <button onClick={() => setOpen(false)} className="text-slate-500">✕</button>
             </div>
 
@@ -129,7 +159,7 @@ export function LeadModalTrigger({ type, label, source = "page" }: { type: LeadT
                 <input className="rounded border p-2" placeholder="Use case*" value={form.useCase} onChange={(e)=>setForm({...form,useCase:e.target.value})} />
                 <textarea className="rounded border p-2" placeholder={locale === "en" ? "Notes" : "备注"} value={form.notes} onChange={(e)=>setForm({...form,notes:e.target.value})} />
                 {error && <p className="rounded bg-rose-100 p-2 text-sm text-rose-700">{error}</p>}
-                <button disabled={loading} onClick={submit} className="rounded bg-cosmic-navy px-4 py-2 text-white disabled:opacity-60">{loading ? "Submitting..." : (type === "demo" ? t.form.titleDemo : t.form.titlePilot)}</button>
+                <button disabled={loading} onClick={submit} className="rounded bg-cosmic-navy px-4 py-2 text-white disabled:opacity-60">{loading ? "Submitting..." : title}</button>
               </div>
             )}
           </div>

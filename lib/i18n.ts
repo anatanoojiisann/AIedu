@@ -15,11 +15,15 @@ export const dictionaries = {
       demo: "Book a demo",
       pilot: "Start a 2-week pilot",
       exploreIntegrations: "View Integrations",
-      viewSecurity: "View Security"
+      viewSecurity: "View Security",
+      requestPricing: "Request pricing",
+      startFree: "Start free",
+      upgradePro: "Upgrade to Pro"
     },
     form: {
       titleDemo: "Book a demo",
       titlePilot: "Start a 2-week pilot",
+      titlePricing: "Request pricing",
       success: "Request received. Our team will contact you in 1 business day.",
       error: "Submission failed. Please retry.",
       saved: "Saved locally"
@@ -39,11 +43,15 @@ export const dictionaries = {
       demo: "预约演示",
       pilot: "开启 2 周试点",
       exploreIntegrations: "查看集成",
-      viewSecurity: "查看安全"
+      viewSecurity: "查看安全",
+      requestPricing: "获取报价",
+      startFree: "免费开始",
+      upgradePro: "升级 Pro"
     },
     form: {
       titleDemo: "预约演示",
       titlePilot: "开启 2 周试点",
+      titlePricing: "获取报价",
       success: "提交成功，我们将在1个工作日内联系您。",
       error: "提交失败，请重试。",
       saved: "已保存到本地"

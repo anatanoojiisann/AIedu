@@ -1,6 +1,6 @@
 import { Locale } from "./i18n";
 
-export type LeadType = "demo" | "pilot";
+export type LeadType = "demo" | "pilot" | "pricing";
 
 export type LeadPayload = {
   type: LeadType;
