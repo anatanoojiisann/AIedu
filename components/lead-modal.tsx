@@ -6,7 +6,7 @@ import { useLocale } from "./locale-context";
 import { LeadPayload, LeadType, pushLead } from "@/lib/storage";
 import Link from "next/link";
 
-type CtaSource = "nav" | "hero" | "pilot" | "security" | "page";
+type CtaSource = "nav" | "hero" | "pilot" | "security" | "implementationA" | "implementationB" | "finalBand" | "page";
 
 type FormState = {
   name: string;

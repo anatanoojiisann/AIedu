@@ -2,39 +2,47 @@
 
 HexaOrigin AI Skill OS marketing-site MVP (Next.js App Router + Tailwind).
 
-## Home vNext update
+## Business vNext update
 
-### What changed (home only)
-- Rebuilt `/` to follow the required IA order exactly:
-  Nav → Hero → Integrations strip → Trust badges → KPI outcomes → Problem/Solution → Hexa Loop → Product modules → Workflow-native → Security & controls → Pilot offer → FAQ → Footer.
-- Removed the old **Required states preview** block from Home.
-- Added full CN/EN mirrored copy for all Home sections (locale-aware and structure-aligned).
-- Updated sticky top nav with compact-on-scroll behavior and both CTA buttons visible.
-- Improved CTA flow instrumentation and validation:
-  - `cta_click` with `source`, `cta`, `locale`
-  - `lead_submit_start`, `lead_submit_success`, `lead_submit_error`
-  - required field validation + email format validation
-  - submit loading (~700ms), randomized error (15%), success + saved indicator, retry without losing input
-- Added optional `section_view` logs for Hero / HexaLoop / Pilot.
+### What changed (`/business` only)
+- Rebuilt the Business page to match required IA order:
+  Hero → Outcomes KPI (4 cards) → Use Cases (6 cards) → How it works (3-step stepper + Input/Output/Proof) → Proof Layer → Implementation timelines (2-week/30-day) → Integrations & Controls → ROI Model → FAQ → Final CTA Band.
+- Added full CN/EN mirrored copy for all Business sections using locale-aware rendering.
+- Added KPI team toggle (Onboarding/Support/Sales/Ops/QA) with mock metric variants and `toggle_change` event logging.
+- Added 3-step How-it-works stepper with synchronized right panel and `step_change` event logging.
+- Added required CTA coverage on Hero, Implementation A/B cards, and Final CTA band, all wired to shared LeadModal.
+- Added required loading/empty patterns in-page:
+  - Hero visual placeholder skeleton,
+  - Proof visual skeleton,
+  - KPI supports `—` fallback and pilot benchmark badge.
 
-### How to test CTA flow
+### CTA flow and events
+- CTA clicks use source values including:
+  `hero`, `implementationA`, `implementationB`, `finalBand`, and existing global sources.
+- LeadModal flow remains:
+  validation → loading (~700ms) → success/error (15% random error) → next steps + saved locally banner.
+- Events:
+  - `cta_click`
+  - `lead_submit_start`
+  - `lead_submit_success`
+  - `lead_submit_error`
+  - `toggle_change`
+  - `step_change`
+
+### How to test
 1. `npm install`
 2. `npm run dev`
-3. Open `/` and click CTA from nav/hero/pilot/security.
-4. In modal, test:
-   - missing required fields,
-   - invalid email,
-   - success state (saved banner + next steps),
-   - error retry flow (15% random failure; retry keeps data).
-5. Inspect localStorage:
-   - `hexaorigin.locale`
-   - `hexaorigin.leads`
-   - `hexaorigin.lastCta`
+3. Open `/business` and verify section order and bilingual content.
+4. Test team toggle updates KPI values and logs `toggle_change`.
+5. Test stepper changes right content and logs `step_change`.
+6. Click CTAs from Hero / Implementation / Final band and verify modal validation/loading/success/error flows.
 
-### Where copy/i18n lives
-- Home bilingual copy: `app/page.tsx` (`content.en` / `content.zh`)
-- Shared CTA/form labels: `lib/i18n.ts`
-- Locale store: `components/locale-context.tsx`
+### Asset placeholder strategy
+- Business page uses explicit placeholders for required visuals:
+  - I-01 Hero visual placeholder
+  - I-04 step diagram placeholders
+  - I-05 proof layer placeholder
+- These placeholders prevent blank blocks and provide fallback-ready structure until WebP/PNG assets are supplied.
 
 ### Known gaps
 - No backend/auth/real integrations (mock-only by design).
