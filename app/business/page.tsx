@@ -292,8 +292,8 @@ export default function BusinessPage() {
           <div className="light-card rounded-lg p-4">
             <ul className="space-y-2 text-slate-700">{copy.proofBullets.map((b) => <li key={b}>• {b}</li>)}</ul>
             <div className="mt-4 flex gap-2">
-              <Link href="/security" className="rounded border border-slate-300 px-3 py-2 text-sm">{t.cta.viewSecurity}</Link>
-              <Link href="/security" className="rounded border border-slate-300 px-3 py-2 text-sm">Learn scoring</Link>
+              <Link href="/business" className="rounded border border-slate-300 px-3 py-2 text-sm">{t.cta.viewSecurity}</Link>
+              <Link href="/business" className="rounded border border-slate-300 px-3 py-2 text-sm">Learn scoring</Link>
             </div>
           </div>
         </div>
@@ -334,8 +334,8 @@ export default function BusinessPage() {
           </div>
         </div>
         <div className="mt-4 flex gap-2">
-          <Link href="/integrations" className="rounded border border-slate-300 px-3 py-2 text-sm">{locale === "en" ? "View integrations" : "查看集成"}</Link>
-          <Link href="/security" className="rounded border border-slate-300 px-3 py-2 text-sm">{locale === "en" ? "View security" : "查看安全"}</Link>
+          <Link href="/pricing" className="rounded border border-slate-300 px-3 py-2 text-sm">{locale === "en" ? "View integrations" : "查看集成"}</Link>
+          <Link href="/business" className="rounded border border-slate-300 px-3 py-2 text-sm">{locale === "en" ? "View security" : "查看安全"}</Link>
         </div>
       </section>
 

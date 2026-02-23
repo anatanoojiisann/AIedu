@@ -12,9 +12,9 @@ export function SiteFooter() {
         <div><p className="font-semibold text-slate-800">Product</p><p>AI Skill OS</p></div>
         <div><p className="font-semibold text-slate-800">Solutions</p><p>Onboarding · Sales · Support</p></div>
         <div><p className="font-semibold text-slate-800">Company</p><p>HexaOrigin</p></div>
-        <div><p className="font-semibold text-slate-800">Legal</p><p>Privacy · Terms · Security</p></div>
+        <div><p className="font-semibold text-slate-800">Legal</p><p>Privacy · Terms</p></div>
       </div>
-      <div className="mx-auto mt-6 max-w-6xl px-4 text-xs text-slate-500">© {year} HexaOrigin {locale === "en" ? "All rights reserved." : "版权所有"} | Privacy | Terms | Security</div>
+      <div className="mx-auto mt-6 max-w-6xl px-4 text-xs text-slate-500">© {year} HexaOrigin {locale === "en" ? "All rights reserved." : "版权所有"} | Privacy | Terms</div>
     </footer>
   );
 }

@@ -137,8 +137,8 @@ export function LeadModalTrigger({
                 <p className="rounded bg-emerald-100 p-3 text-emerald-800">{t.form.success}</p>
                 {saved && <p className="rounded bg-cyan-100 p-2 text-sm text-cyan-800">{t.form.saved}</p>}
                 <div className="flex gap-2">
-                  <Link className="rounded border border-slate-300 px-3 py-2 text-sm" href="/integrations">{t.cta.exploreIntegrations}</Link>
-                  <Link className="rounded border border-slate-300 px-3 py-2 text-sm" href="/security">{t.cta.viewSecurity}</Link>
+                  <Link className="rounded border border-slate-300 px-3 py-2 text-sm" href="/pricing">{t.cta.exploreIntegrations}</Link>
+                  <Link className="rounded border border-slate-300 px-3 py-2 text-sm" href="/business">{t.cta.viewSecurity}</Link>
                 </div>
               </div>
             ) : (

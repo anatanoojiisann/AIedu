@@ -7,12 +7,10 @@ import { useLocale } from "./locale-context";
 import { LeadModalTrigger } from "./lead-modal";
 
 const navItems = [
-  { href: "/", labelEn: "Product", labelZh: "产品" },
-  { href: "/business", labelEn: "Solutions", labelZh: "解决方案" },
-  { href: "/integrations", labelEn: "Integrations", labelZh: "集成" },
+  { href: "/", labelEn: "Home", labelZh: "首页" },
+  { href: "/business", labelEn: "Business", labelZh: "商业价值" },
   { href: "/pricing", labelEn: "Pricing", labelZh: "定价" },
-  { href: "/security", labelEn: "Security", labelZh: "安全" },
-  { href: "/resources", labelEn: "Resources", labelZh: "资源" },
+  { href: "/login", labelEn: "Login", labelZh: "登录" },
 ];
 
 export function SiteHeader() {
