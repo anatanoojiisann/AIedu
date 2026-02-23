@@ -1,38 +1,41 @@
 # AIedu
 
-HexaOrigin AI Skill OS marketing-site MVP built with Next.js App Router + Tailwind, focused on B2B demo/pilot conversion and procurement trust.
+HexaOrigin AI Skill OS marketing-site MVP (Next.js App Router + Tailwind).
 
-## What changed
-- Added a full multi-page bilingual marketing site: Home, Business, Integrations, Pricing, Security, Resources, Login, and custom 404.
-- Implemented a locale context (EN/ZH) with localStorage persistence.
-- Added reusable conversion modal (`Book a demo` / `Start a pilot`) with:
-  - lightweight form validation,
-  - loading state (~700ms simulated delay),
-  - error state (random 15% failure),
-  - success state with next-step CTAs,
-  - localStorage lead persistence (last 20 records),
-  - CTA + submit event logging to console.
-- Added explicit loading/empty/error/success state examples on every required page.
-- Applied “Cosmic Enterprise” visual direction using a dark hero / light body split and restrained neon accents.
+## Home vNext update
 
-## How to test
+### What changed (home only)
+- Rebuilt `/` to follow the required IA order exactly:
+  Nav → Hero → Integrations strip → Trust badges → KPI outcomes → Problem/Solution → Hexa Loop → Product modules → Workflow-native → Security & controls → Pilot offer → FAQ → Footer.
+- Removed the old **Required states preview** block from Home.
+- Added full CN/EN mirrored copy for all Home sections (locale-aware and structure-aligned).
+- Updated sticky top nav with compact-on-scroll behavior and both CTA buttons visible.
+- Improved CTA flow instrumentation and validation:
+  - `cta_click` with `source`, `cta`, `locale`
+  - `lead_submit_start`, `lead_submit_success`, `lead_submit_error`
+  - required field validation + email format validation
+  - submit loading (~700ms), randomized error (15%), success + saved indicator, retry without losing input
+- Added optional `section_view` logs for Hero / HexaLoop / Pilot.
+
+### How to test CTA flow
 1. `npm install`
 2. `npm run dev`
-3. Visit:
-   - `/`
-   - `/business`
-   - `/integrations`
-   - `/pricing`
-   - `/security`
-   - `/resources`
-   - `/login`
-   - any unknown route for `404`
-4. Confirm any primary CTA opens the lead modal and submitting stores data in localStorage keys:
+3. Open `/` and click CTA from nav/hero/pilot/security.
+4. In modal, test:
+   - missing required fields,
+   - invalid email,
+   - success state (saved banner + next steps),
+   - error retry flow (15% random failure; retry keeps data).
+5. Inspect localStorage:
    - `hexaorigin.locale`
    - `hexaorigin.leads`
    - `hexaorigin.lastCta`
 
-## Known gaps
-- No backend/auth/real integrations (intentionally mocked for MVP).
-- Accessibility and advanced mobile nav polish can be improved in next iteration.
-- Build/test commands could not be executed in this environment due npm registry access restrictions.
+### Where copy/i18n lives
+- Home bilingual copy: `app/page.tsx` (`content.en` / `content.zh`)
+- Shared CTA/form labels: `lib/i18n.ts`
+- Locale store: `components/locale-context.tsx`
+
+### Known gaps
+- No backend/auth/real integrations (mock-only by design).
+- Install/build checks can fail in restricted environments that block npm registry access.

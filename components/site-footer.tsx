@@ -1,16 +1,20 @@
-import Link from "next/link";
+"use client";
+
+import { useLocale } from "./locale-context";
 
 export function SiteFooter() {
+  const year = new Date().getFullYear();
+  const { locale } = useLocale();
+
   return (
     <footer className="border-t border-cosmic-silver/30 bg-white py-10">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 text-sm text-slate-600">
-        <p>© {new Date().getFullYear()} HexaOrigin AI Skill OS</p>
-        <div className="flex gap-3">
-          <Link href="/security">Security</Link>
-          <Link href="/integrations">Integrations</Link>
-          <Link href="/pricing">Pricing</Link>
-        </div>
+      <div className="mx-auto grid max-w-6xl gap-6 px-4 text-sm text-slate-600 md:grid-cols-4">
+        <div><p className="font-semibold text-slate-800">Product</p><p>AI Skill OS</p></div>
+        <div><p className="font-semibold text-slate-800">Solutions</p><p>Onboarding · Sales · Support</p></div>
+        <div><p className="font-semibold text-slate-800">Company</p><p>HexaOrigin</p></div>
+        <div><p className="font-semibold text-slate-800">Legal</p><p>Privacy · Terms · Security</p></div>
       </div>
+      <div className="mx-auto mt-6 max-w-6xl px-4 text-xs text-slate-500">© {year} HexaOrigin {locale === "en" ? "All rights reserved." : "版权所有"} | Privacy | Terms | Security</div>
     </footer>
   );
 }

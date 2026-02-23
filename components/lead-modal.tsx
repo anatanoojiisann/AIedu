@@ -6,6 +6,8 @@ import { useLocale } from "./locale-context";
 import { LeadPayload, LeadType, pushLead } from "@/lib/storage";
 import Link from "next/link";
 
+type CtaSource = "nav" | "hero" | "pilot" | "security" | "page";
+
 type FormState = {
   name: string;
   workEmail: string;
@@ -28,7 +30,9 @@ const initial: FormState = {
   notes: "",
 };
 
-export function LeadModalTrigger({ type, label }: { type: LeadType; label: string }) {
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export function LeadModalTrigger({ type, label, source = "page" }: { type: LeadType; label: string; source?: CtaSource }) {
   const pathname = usePathname();
   const { locale, t } = useLocale();
   const [open, setOpen] = useState(false);
@@ -39,19 +43,25 @@ export function LeadModalTrigger({ type, label }: { type: LeadType; label: strin
   const [saved, setSaved] = useState(false);
 
   const submit = async () => {
-    if (!form.company || !form.workEmail || !form.role || !form.teamSize || !form.useCase) {
+    if (!form.company || !form.workEmail || !form.role || !form.teamSize || !form.platform || !form.useCase) {
       setError(locale === "en" ? "Please fill required fields." : "请补全必填项");
+      return;
+    }
+
+    if (!emailRegex.test(form.workEmail)) {
+      setError(locale === "en" ? "Please enter a valid work email." : "请输入有效企业邮箱");
       return;
     }
 
     setLoading(true);
     setError("");
+    console.log("lead_submit_start", { type, source, locale, pathname });
     await new Promise((r) => setTimeout(r, 700));
 
     if (Math.random() < 0.15) {
       setLoading(false);
       setError(t.form.error);
-      console.log("lead_submit_error", { type, pathname });
+      console.log("lead_submit_error", { type, source, pathname, locale });
       return;
     }
 
@@ -64,7 +74,7 @@ export function LeadModalTrigger({ type, label }: { type: LeadType; label: strin
     };
 
     pushLead(payload);
-    localStorage.setItem("hexaorigin.lastCta", `${type}:${pathname}`);
+    localStorage.setItem("hexaorigin.lastCta", `${source}:${type}:${pathname}`);
     console.log("lead_submit_success", payload);
     setLoading(false);
     setSuccess(true);
@@ -77,9 +87,9 @@ export function LeadModalTrigger({ type, label }: { type: LeadType; label: strin
       <button
         onClick={() => {
           setOpen(true);
-          console.log("cta_click", { type, pathname });
+          console.log("cta_click", { source, cta: type, locale, pathname });
         }}
-        className="rounded bg-gradient-to-r from-cosmic-blue to-cosmic-cyan px-3 py-2 text-xs font-semibold text-cosmic-navy"
+        className={type === "demo" ? "rounded bg-gradient-to-r from-cosmic-blue to-cosmic-cyan px-3 py-2 text-xs font-semibold text-cosmic-navy" : "rounded border border-cosmic-silver/60 bg-transparent px-3 py-2 text-xs font-semibold text-current"}
       >
         {label}
       </button>
@@ -111,6 +121,7 @@ export function LeadModalTrigger({ type, label }: { type: LeadType; label: strin
                   <input className="rounded border p-2" placeholder="Team size*" value={form.teamSize} onChange={(e)=>setForm({...form,teamSize:e.target.value})} />
                 </div>
                 <select className="rounded border p-2" value={form.platform} onChange={(e)=>setForm({...form,platform:e.target.value})}>
+                  <option value="">Platform*</option>
                   <option>DingTalk</option>
                   <option>WeCom</option>
                   <option>Slack</option>
