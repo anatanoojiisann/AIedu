@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ShieldCheck, Link2, ChartNoAxesColumn, Workflow, CheckCircle2 } from "lucide-react";
 import { LeadModalTrigger } from "@/components/lead-modal";
@@ -12,17 +13,11 @@ function HeroIllustration({ mobile = false }: { mobile?: boolean }) {
   const [broken, setBroken] = useState(false);
 
   if (broken) {
-    return (
-      <div className={`rounded-xl border border-cosmic-silver/30 bg-cosmic-navy/20 ${mobile ? "h-52" : "h-[520px] lg:h-[580px]"} p-4 text-sm text-cosmic-secondary`}>
-        Illustration unavailable.
-      </div>
-    );
+    return <div className={`rounded-xl border border-cosmic-silver/30 bg-cosmic-navy/20 ${mobile ? "h-52" : "h-[520px] lg:h-[580px]"} p-4 text-sm text-cosmic-secondary`}>Illustration unavailable.</div>;
   }
 
   return (
-    <div
-      className={`relative overflow-hidden rounded-xl border border-cosmic-silver/20 bg-[radial-gradient(circle_at_70%_35%,rgba(10,160,255,0.22),transparent_55%)] ${mobile ? "h-52 max-h-[320px] w-full" : "h-[420px] max-h-[480px] lg:h-[560px] lg:max-h-[600px]"}`}
-    >
+    <div className={`relative overflow-hidden rounded-xl border border-cosmic-silver/20 bg-[radial-gradient(circle_at_70%_35%,rgba(10,160,255,0.22),transparent_55%)] ${mobile ? "h-52 max-h-[320px] w-full" : "h-[420px] max-h-[480px] lg:h-[560px] lg:max-h-[600px]"}`}>
       {!loaded && <div className="absolute inset-0 animate-pulse bg-white/10" />}
       <picture>
         <source srcSet="/images/hero-illustration-v1.webp" type="image/webp" />
@@ -34,7 +29,36 @@ function HeroIllustration({ mobile = false }: { mobile?: boolean }) {
           fetchPriority="high"
           onLoad={() => setLoaded(true)}
           onError={() => setBroken(true)}
-          className="h-full w-full object-contain drop-shadow-[0_12px_40px_rgba(0,0,0,0.35)]" style={{ objectPosition: "right center" }}
+          className="h-full w-full object-contain drop-shadow-[0_12px_40px_rgba(0,0,0,0.35)]"
+          style={{ objectPosition: "right center" }}
+        />
+      </picture>
+    </div>
+  );
+}
+
+function CompareGlowImage({ type }: { type: "before" | "after" }) {
+  const [loaded, setLoaded] = useState(false);
+  const [broken, setBroken] = useState(false);
+
+  if (broken) {
+    return <div className="flex min-h-[320px] items-center justify-center text-sm text-cosmic-secondary">Image unavailable</div>;
+  }
+
+  return (
+    <div className={`relative flex min-h-[320px] items-center justify-center px-0 py-6 sm:min-h-[380px] lg:min-h-[460px] ${type === "before" ? "before-fog" : "after-glow"}`}>
+      {!loaded && <div className="absolute inset-0 animate-pulse bg-white/5" />}
+      <picture>
+        <source srcSet={`/images/system-compare-${type}-v1.webp`} type="image/webp" />
+        <img
+          src={`/images/system-compare-${type}-v1.png`}
+          alt={type === "before" ? "Fragmented training system with disconnected signals and no unified scoring." : "Closed-loop training system with continuous assessment, retraining cycle, and workflow execution."}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+          onError={() => setBroken(true)}
+          className={`h-full w-full max-h-[60vh] object-contain ${type === "before" ? "brightness-[0.86] saturate-90" : "scale-[1.02] saturate-110"}`}
+          style={{ objectPosition: "center center" }}
         />
       </picture>
     </div>
@@ -78,6 +102,9 @@ export default function HomePage() {
     workflow: "Training happens where work happens.",
     security: "Enterprise-grade controls",
     pilot: "2-week pilot: from training to proven impact",
+    compareTitle: "Training breaks when systems don’t close the loop.",
+    compareSub: "Fragmented signals. No proof. No workflow execution.",
+    micro: "See how HexaOrigin connects every signal →",
     faq: [
       ["Do you need internal data?", "No for MVP. Start with approved SOP content."],
       ["Can we review scoring evidence?", "Yes, every score has dimensions and evidence snippets."],
@@ -93,6 +120,9 @@ export default function HomePage() {
     workflow: "训练不脱离工作流：在团队每天用的地方发生",
     security: "企业级管理控制",
     pilot: "2 周试点：把岗位培训跑到可证明效果",
+    compareTitle: "Training breaks when systems don’t close the loop.",
+    compareSub: "Fragmented signals. No proof. No workflow execution.",
+    micro: "查看 HexaOrigin 如何连接每个信号 →",
     faq: [
       ["需要接入内部数据吗？", "MVP 不强制，可先用 SOP 内容。"],
       ["评分是否可复核？", "可以，每条评分都有证据片段。"],
@@ -109,9 +139,7 @@ export default function HomePage() {
           <div className="text-cosmic-text">
             <p className="mb-3 text-cosmic-cyan">{text.eyebrow}</p>
             <h1 className="mb-4 text-4xl font-bold leading-tight">{text.title}</h1>
-            <div className="mb-4 block lg:hidden">
-              <HeroIllustration mobile />
-            </div>
+            <div className="mb-4 block lg:hidden"><HeroIllustration mobile /></div>
             <p className="mb-4 text-cosmic-secondary">{text.sub}</p>
             <ul className="mb-5 space-y-2 text-sm text-cosmic-text">
               {["Closed-loop training", "Proof with scorecards & trends", "Workflow-native deployment"].map((bullet) => <li key={bullet} className="flex items-start gap-2"><CheckCircle2 size={16} className="mt-0.5 text-cosmic-cyan"/>{bullet}</li>)}
@@ -122,22 +150,52 @@ export default function HomePage() {
             </div>
             <p className="text-xs text-cosmic-secondary">{text.works}</p>
           </div>
-          <div className="hidden lg:block">
-            <HeroIllustration />
+          <div className="hidden lg:block"><HeroIllustration /></div>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-[linear-gradient(160deg,#05091f_0%,#0a1a42_45%,#071433_100%)] py-14">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(10,160,255,0.18),transparent_45%),radial-gradient(circle_at_85%_80%,rgba(0,229,255,0.16),transparent_40%)]" />
+        <div className="relative mx-auto max-w-6xl px-4 text-cosmic-text">
+          <h2 className="mb-2 text-3xl font-semibold">{text.compareTitle}</h2>
+          <p className="mb-8 text-cosmic-secondary">{text.compareSub}</p>
+
+          <div className="grid items-center gap-8 lg:grid-cols-[48fr_52fr] lg:gap-12">
+            <div>
+              <p className="mb-2 text-xs uppercase tracking-[0.2em] text-cosmic-secondary">System Breakdown</p>
+              <CompareGlowImage type="before" />
+              <ul className="mt-2 space-y-2 text-sm text-cosmic-secondary">
+                <li>• Disconnected signals</li>
+                <li>• No unified scoring</li>
+                <li>• No operational deployment</li>
+              </ul>
+            </div>
+            <div>
+              <p className="mb-2 text-xs uppercase tracking-[0.2em] text-cosmic-cyan">Closed-Loop System</p>
+              <CompareGlowImage type="after" />
+              <ul className="mt-2 space-y-2 text-sm text-cosmic-text">
+                <li>• Continuous assessment loop</li>
+                <li>• Spot-check → retrain feedback cycle</li>
+                <li>• Workflow-native execution</li>
+                <li>• Exportable governance proof</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-8 flex justify-center">
+            <Link href="/business" className="rounded-full border border-cosmic-silver/40 bg-cosmic-navy/40 px-5 py-2 text-sm text-cosmic-cyan hover:bg-cosmic-navy/70">{text.micro}</Link>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-8">
-        <div className="grid gap-3 md:grid-cols-6">{badges.map((b) => <div key={b} className="light-card rounded-lg p-3 text-center text-sm text-slate-600">{b}</div>)}</div>
-      </section>
-
+      <section className="mx-auto max-w-6xl px-4 py-8"><div className="grid gap-3 md:grid-cols-6">{badges.map((b) => <div key={b} className="light-card rounded-lg p-3 text-center text-sm text-slate-600">{b}</div>)}</div></section>
       <section className="mx-auto max-w-6xl px-4 pb-8">
         <div className="grid gap-4 md:grid-cols-3">
-          {[{title:"Go live in 24 hours",sub:"From workflow import to first manager report",icon:<Workflow size={16}/>},{title:"92% scenario completion",sub:"Verified role-play scoring",icon:<ChartNoAxesColumn size={16}/>},{title:"34% fewer onboarding errors",sub:"Measured on SOP checkpoints",icon:<ShieldCheck size={16}/>}].map((k) => (<div key={k.title} className="light-card rounded-lg p-4"><div className="mb-2 inline-flex rounded bg-slate-100 p-2">{k.icon}</div><p className="kpi-num text-2xl font-bold">{k.title}</p><p className="text-sm text-slate-600">{k.sub}</p></div>))}
+          {[{title:"Go live in 24 hours",sub:"From workflow import to first manager report",icon:<Workflow size={16}/>},{title:"92% scenario completion",sub:"Verified role-play scoring",icon:<ChartNoAxesColumn size={16}/>},{title:"34% fewer onboarding errors",sub:"Measured on SOP checkpoints",icon:<ShieldCheck size={16}/>}].map((k) => (
+            <div key={k.title} className="light-card rounded-lg p-4"><div className="mb-2 inline-flex rounded bg-slate-100 p-2">{k.icon}</div><p className="kpi-num text-2xl font-bold">{k.title}</p><p className="text-sm text-slate-600">{k.sub}</p></div>
+          ))}
         </div>
       </section>
-
       <section className="mx-auto max-w-6xl px-4 py-8"><h2 className="mb-4 text-2xl font-semibold">{text.problem}</h2><div className="grid gap-4 md:grid-cols-2"><div className="light-card rounded-lg p-4">• No proof of impact<br/>• Managers can’t trust skill levels<br/>• Training is disconnected from workflows</div><div className="light-card rounded-lg p-4">• Scorecards + trends + exportable proof<br/>• Role-play + spot checks + retraining<br/>• Integrations with your workflow stack</div></div></section>
       <section ref={loopRef} className="mx-auto max-w-6xl px-4 py-8"><h2 className="mb-4 text-2xl font-semibold">{text.hexa}</h2><div className="grid gap-3 md:grid-cols-6">{loop.map((s, i)=><div key={s} className="light-card rounded-lg p-3 text-center"><p className="text-xs text-slate-500">0{i+1}</p><p>{s}</p></div>)}</div></section>
       <section className="mx-auto max-w-6xl px-4 py-8"><h2 className="mb-4 text-2xl font-semibold">{text.workflow}</h2><div className="grid gap-4 md:grid-cols-2"><div className="light-card rounded-lg p-4"><div className="flex items-center justify-between text-sm"><span>Trigger</span><Link2 size={14}/><span>Practice</span><Link2 size={14}/><span>Score</span><Link2 size={14}/><span>Dashboard</span></div></div><div className="light-card rounded-lg p-4 text-slate-600">Onboarding SOP, support scenarios, sales enablement.</div></div></section>
