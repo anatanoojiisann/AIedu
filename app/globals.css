@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+}
+
+.dark-hero {
+  background:
+    radial-gradient(circle at top left, rgba(10, 160, 255, 0.25), transparent 45%),
+    radial-gradient(circle at top right, rgba(0, 229, 255, 0.16), transparent 40%),
+    #070921;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(170, 176, 191, 0.22);
+  backdrop-filter: blur(10px);
+}
+
+.light-card {
+  border: 1px solid rgba(170, 176, 191, 0.35);
+  background: white;
+}
+
+.hex-grid {
+  background-image: linear-gradient(rgba(170, 176, 191, 0.14) 1px, transparent 1px),
+    linear-gradient(to right, rgba(170, 176, 191, 0.14) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.kpi-num {
+  font-variant-numeric: tabular-nums;
+}

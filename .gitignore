@@ -1,0 +1,9 @@
+node_modules/
+.next/
+
+# Binary illustration assets are intentionally excluded from this repo
+public/images/*.png
+public/images/*.webp
+public/images/*.jpg
+public/images/*.jpeg
+public/images/*.gif
