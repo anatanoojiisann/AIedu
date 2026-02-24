@@ -7,3 +7,9 @@ public/images/*.webp
 public/images/*.jpg
 public/images/*.jpeg
 public/images/*.gif
+
+# Explicit third-screen image names
+public/images/hexa-loop-v1.png
+public/images/hexa-loop-v1.webp
+public/images/workflow-native-v1.png
+public/images/workflow-native-v1.webp

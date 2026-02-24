@@ -2,53 +2,43 @@
 
 HexaOrigin AI Skill OS marketing site MVP (Next.js App Router + Tailwind).
 
-## Second-screen update: System Breakdown vs Closed-Loop System
+## Third-screen update (Homepage)
 
-### What changed (`/` only)
-- Added a new comparison section right below Hero:
-  - Title + subtitle
-  - Before vs After illustration area
-  - Left/Right system bullets
-  - Center micro CTA link
-- Implemented responsive layout behavior:
-  - Desktop: two columns with 48/52 weighting
-  - Tablet/mobile: stacked layout
-- Implemented image rendering strategy with resilient fallbacks:
-  - WebP preferred
+### What changed
+- Reworked Homepage Screen 3 into four narrative sections:
+  1) Hexa Loop methodology stage (dark)
+  2) Workflow-native deployment (light)
+  3) Enterprise-grade controls (light gray)
+  4) 2-week pilot conversion CTA band (deep blue)
+- Added dedicated image renderer for Screen 3 visuals with:
+  - WebP-first `<picture>` source
   - PNG fallback
-  - If image still fails, section keeps text + CTA and shows non-blocking fallback state
-- Added structure-focused dark tech background blend with radial glows.
+  - fixed min-height loading placeholders
+  - non-blocking error/empty fallback state
+  - `object-fit: contain` and no cropping/stretching
 
-### Image behavior guarantees
-- `object-fit: contain` (no crop / no stretch)
-- fixed min-height containers (loading without layout jump)
-- mobile visual capped with `max-h-[60vh]` to avoid overlong first reading flow
+### New image runtime paths
+(kept uncommitted on purpose; ignored by git)
+- `/images/hexa-loop-v1.webp` + `/images/hexa-loop-v1.png`
+- `/images/workflow-native-v1.webp` + `/images/workflow-native-v1.png`
 
-### Accessibility
-- Informative alt text configured for both images:
-  - Before: fragmented/disconnected system
-  - After: closed-loop system with retraining cycle and execution
+### A11y
+- Hexa alt: `Hexa Loop methodology diagram showing a closed-loop training cycle.`
+- Workflow alt: `Workflow-native training flow: trigger, practice, score, and dashboard.`
 
-### Cache strategy
-- `next.config.mjs` sets image headers to:
+### Cache
+- `next.config.mjs` serves `/images/*.webp|png` with:
   - `Cache-Control: public, max-age=31536000, immutable`
-- Versioning strategy: bump filename (`-v2` or hash) when images update.
 
 ### Binary policy
-- As requested, binary image files are not committed.
-- `.gitignore` already includes `public/images/*.png` and `public/images/*.webp`.
-- Put these files locally/CDN at runtime:
-  - `public/images/system-compare-before-v1.webp`
-  - `public/images/system-compare-before-v1.png`
-  - `public/images/system-compare-after-v1.webp`
-  - `public/images/system-compare-after-v1.png`
+- Binary image files remain excluded from git.
+- `.gitignore` includes both wildcard and explicit file-name patterns for the new third-screen assets.
 
 ### How to test
 1. `npm install`
 2. `npm run dev`
-3. Open `/` and validate second screen at breakpoints:
+3. Open `/` and validate third-screen structure and breakpoints:
    - Desktop (>=1024)
    - Tablet (768-1023)
    - Mobile (<768)
-4. Optional failure test:
-   - Temporarily rename one compare image and verify text/CTA still render with fallback state.
+4. Break one image path to verify fallback state does not block copy/CTA.
